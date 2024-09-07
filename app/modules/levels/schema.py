@@ -4,8 +4,8 @@ from datetime import datetime
 
 
 class LevelBase(BaseModel):
-    level_name: str
-    level_duration: int
+    name: str
+    duration: int
     training_type_id: UUID
 
 

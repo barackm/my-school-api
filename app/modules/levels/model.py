@@ -12,8 +12,8 @@ class Level(Base):
     training_type_id = Column(
         UUID(as_uuid=True), ForeignKey("training_types.id"), nullable=False
     )
-    level_name = Column(String, nullable=False)
-    level_duration = Column(Integer, nullable=False)
+    name = Column(String, nullable=False)
+    duration = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
 
     training_type = relationship("TrainingType", back_populates="levels")
