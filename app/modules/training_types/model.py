@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from app.db.database import Base
 import uuid
 from datetime import datetime, timezone
@@ -17,3 +18,6 @@ class TrainingType(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
+
+    levels = relationship("Level", back_populates="training_type")
+    promotions = relationship("Promotion", back_populates="training_type")

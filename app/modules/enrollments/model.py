@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from app.db.database import Base
+from sqlalchemy.orm import relationship
 import uuid
 from datetime import datetime, timezone
 
@@ -23,4 +24,11 @@ class StudentEnrollment(Base):
         DateTime,
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    student = relationship(
+        "Student", back_populates="enrollments", overlaps="students,promotions"
+    )
+    promotion = relationship(
+        "Promotion", back_populates="enrollments", overlaps="students,promotions"
     )

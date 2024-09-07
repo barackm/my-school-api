@@ -17,6 +17,5 @@ def create_student_enrollment(
         end_date=None,
     )
     db.add(student_enrollment)
-    db.commit()
-    db.refresh(student_enrollment)
+
     return student_enrollment

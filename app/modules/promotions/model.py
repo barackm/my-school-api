@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Date, Float, ForeignKey, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
 from app.db.database import Base
+from sqlalchemy.orm import relationship
 import uuid
 from datetime import datetime, timezone
 
@@ -22,4 +23,15 @@ class Promotion(Base):
         DateTime,
         default=datetime.now(timezone.utc),
         onupdate=datetime.now(timezone.utc),
+    )
+
+    training_type = relationship("TrainingType", back_populates="promotions")
+    enrollments = relationship(
+        "StudentEnrollment", back_populates="promotion", overlaps="promotions,students"
+    )
+    students = relationship(
+        "Student",
+        secondary="student_enrollments",
+        back_populates="promotions",
+        overlaps="enrollments",
     )

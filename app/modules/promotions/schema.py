@@ -8,6 +8,7 @@ class PromotionBase(BaseModel):
     price_per_month: float
     promotion_start_date: date
     promotion_end_date: date
+    name: str
 
 
 class PromotionCreate(PromotionBase):
@@ -21,3 +22,6 @@ class PromotionResponse(PromotionBase):
 
     class Config:
         orm_mode = True
+
+
+PromotionResponse.model_rebuild()
