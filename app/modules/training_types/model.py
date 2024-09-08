@@ -21,3 +21,4 @@ class TrainingType(Base):
 
     levels = relationship("Level", back_populates="training_type")
     promotions = relationship("Promotion", back_populates="training_type")
+    time_slots = relationship("TimeSlot", back_populates="training_type")

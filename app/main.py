@@ -4,6 +4,7 @@ from sqlalchemy.orm import registry
 from app.modules.levels.route import router as level_router
 from app.modules.promotions.route import router as promotion_router
 from app.modules.training_types.route import router as training_type_router
+from app.modules.time_slots.route import router as time_slot_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -24,6 +25,7 @@ app.include_router(promotion_router, prefix="/promotions", tags=["promotions"])
 app.include_router(
     training_type_router, prefix="/training_types", tags=["training_types"]
 )
+app.include_router(time_slot_router, prefix="/time_slots", tags=["time_slots"])
 
 
 @app.get("/")

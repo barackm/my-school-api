@@ -15,6 +15,9 @@ class StudentEnrollment(Base):
         UUID(as_uuid=True), ForeignKey("promotions.id"), nullable=False
     )
     level_id = Column(UUID(as_uuid=True), ForeignKey("levels.id"), nullable=False)
+    time_slot_id = Column(
+        UUID(as_uuid=True), ForeignKey("time_slots.id"), nullable=True
+    )
     enrollment_date = Column(DateTime, nullable=False)
     end_date = Column(DateTime, nullable=True)
     status = Column(String, nullable=False, default="active")
@@ -31,4 +34,7 @@ class StudentEnrollment(Base):
     )
     promotion = relationship(
         "Promotion", back_populates="enrollments", overlaps="students,promotions"
+    )
+    time_slot = relationship(
+        "TimeSlot", back_populates="enrollments", overlaps="time_slots"
     )
