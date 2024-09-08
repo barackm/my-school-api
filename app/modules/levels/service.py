@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from uuid import UUID
+from sqlalchemy.exc import SQLAlchemyError, DataError
 from .model import Level
 from ..training_types.service import find_training_type_by_id
 
@@ -9,7 +9,10 @@ def get_levels(db: Session):
 
 
 def get_level_by_id(db: Session, level_id: str):
-    return db.query(Level).filter(Level.id == level_id).first()
+    try:
+        return db.query(Level).filter(Level.id == level_id).first()
+    except (SQLAlchemyError, DataError):
+        return None
 
 
 def get_levels_by_training_type_id(db: Session, training_type_id: str):

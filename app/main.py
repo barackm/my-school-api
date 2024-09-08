@@ -4,8 +4,16 @@ from sqlalchemy.orm import registry
 from app.modules.levels.route import router as level_router
 from app.modules.promotions.route import router as promotion_router
 from app.modules.training_types.route import router as training_type_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 mapper_registry = registry()
 mapper_registry.configure()

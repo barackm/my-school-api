@@ -6,13 +6,15 @@ from .model import TrainingType
 
 
 def get_training_types(db: Session):
-    return (
+    training_types = (
         db.query(TrainingType)
         .options(
             selectinload(TrainingType.levels), selectinload(TrainingType.promotions)
         )
         .all()
     )
+    total = db.query(TrainingType).count()
+    return {"total": total, "data": training_types}
 
 
 def find_training_type_by_id(db: Session, training_type_id: str):

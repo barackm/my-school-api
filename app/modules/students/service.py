@@ -9,7 +9,9 @@ from ..enrollments.model import StudentEnrollment
 
 
 def get_students(db: Session):
-    return db.query(Student).all()
+    students = db.query(Student).all()
+    total = db.query(Student).count()
+    return {"total": total, "data": students}
 
 
 def create_student(

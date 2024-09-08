@@ -7,7 +7,7 @@ def create_student_enrollment(
     db: Session,
     student_id: int,
     promotion_id: int,
-    level_id: int,
+    level_id: str,
 ) -> StudentEnrollment:
     student_enrollment = StudentEnrollment(
         student_id=student_id,

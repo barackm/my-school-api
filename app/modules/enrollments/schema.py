@@ -25,4 +25,4 @@ class EnrollmentResponse(EnrollmentBase):
     promotion: PromotionResponse
 
     class Config:
-        orm_mode = True
+        from_attributes = True

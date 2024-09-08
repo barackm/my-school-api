@@ -19,4 +19,12 @@ class StudentResponse(StudentCreate):
     id: UUID
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class StudentsResponse(BaseModel):
+    total: int
+    data: List[StudentCreate]
+
+    class Config:
+        from_attributes = True

@@ -22,4 +22,12 @@ class TrainingTypeResponse(TrainingTypeBase):
     promotions: Optional[List[PromotionResponse]] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class TrainingTypesResponse(BaseModel):
+    total: int
+    data: List[TrainingTypeResponse]
+
+    class Config:
+        from_attributes = True

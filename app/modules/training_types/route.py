@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from .schema import TrainingTypeResponse, TrainingTypeCreate
+from .schema import TrainingTypeResponse, TrainingTypeCreate, TrainingTypesResponse
 from typing import List
 from sqlalchemy.orm import Session
 from .service import (
@@ -15,7 +15,7 @@ from app.db.database import get_db
 router = APIRouter()
 
 
-@router.get("/", response_model=List[TrainingTypeResponse])
+@router.get("/", response_model=TrainingTypesResponse)
 def all(db: Session = Depends(get_db)):
     return get_training_types(db)
 

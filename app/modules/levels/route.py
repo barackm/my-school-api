@@ -27,7 +27,7 @@ def list_levels(db: Session = Depends(get_db)):
 
 
 @router.get("/{level_id}", response_model=LevelResponse)
-def get_level(level_id: int, db: Session = Depends(get_db)):
+def get_level(level_id: str, db: Session = Depends(get_db)):
     level = get_level_by_id(db, level_id)
     if level is None:
         raise HTTPException(status_code=404, detail="Level not found")
@@ -59,7 +59,7 @@ def create(level: LevelCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{level_id}", response_model=LevelResponse)
-def update(level_id: int, level: LevelCreate, db: Session = Depends(get_db)):
+def update(level_id: str, level: LevelCreate, db: Session = Depends(get_db)):
     existing_level = get_level_by_id(db, level_id)
     if existing_level is None:
         raise HTTPException(status_code=404, detail="Level not found")
@@ -78,7 +78,7 @@ def update(level_id: int, level: LevelCreate, db: Session = Depends(get_db)):
 
 
 @router.delete("/{level_id}", response_model=LevelResponse)
-def delete(level_id: int, db: Session = Depends(get_db)):
+def delete(level_id: str, db: Session = Depends(get_db)):
     level = get_level_by_id(db, level_id)
     if level is None:
         raise HTTPException(status_code=404, detail="Level not found")

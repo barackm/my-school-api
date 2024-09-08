@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from app.modules.students.schema import StudentResponse, StudentCreate
+from app.modules.students.schema import StudentResponse, StudentsResponse, StudentCreate
 from app.modules.students.service import get_students, create_student
 from app.db.database import get_db
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[StudentResponse])
-def list_students(db: Session = Depends(get_db)):
+@router.get("/", response_model=StudentsResponse)
+def all(db: Session = Depends(get_db)):
     students = get_students(db=db)
     return students
 
