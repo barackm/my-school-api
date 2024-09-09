@@ -41,9 +41,7 @@ def update_level(db: Session, level_id: str, level: Level):
         return None
 
     existing_level.name = level.name
-    existing_level.order = level.order
-    existing_level.photo = level.photo
-    existing_level.description = level.description
+    existing_level.duration = level.duration
 
     db.commit()
     db.refresh(existing_level)
@@ -67,4 +65,5 @@ def check_level_name_exists(db: Session, program_id: str, name: str):
         .filter(Level.name.ilike(name))
         .first()
     )
-    return existing_level is not None
+
+    return existing_level

@@ -2,10 +2,12 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from sqlalchemy.orm import Session
 from .model import Level
+import uuid
 from app.db.database import get_db
 from ..programs.service import (
     find_program_by_id,
 )
+
 from .service import (
     get_levels,
     get_level_by_id,
@@ -50,7 +52,7 @@ def create(level: LevelCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Program not found")
 
     existing_level = check_level_name_exists(db, level.program_id, level.name)
-    if existing_level:
+    if existing_level is not None:
         raise HTTPException(
             status_code=400, detail="Level name already exists for this program type"
         )
@@ -69,7 +71,7 @@ def update(level_id: str, level: LevelCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Program not found")
 
     existing_level = check_level_name_exists(db, level.program_id, level.name)
-    if existing_level:
+    if existing_level is not None and existing_level.id != uuid.UUID(level_id):
         raise HTTPException(
             status_code=400, detail="Level name already exists for this program type"
         )
