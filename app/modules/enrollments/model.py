@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, ForeignKey
+from sqlalchemy import Column, String, Date, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from app.db.database import Base
 from sqlalchemy.orm import relationship
@@ -10,17 +10,28 @@ class StudentEnrollment(Base):
     __tablename__ = "student_enrollments"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    student_id = Column(UUID(as_uuid=True), ForeignKey("students.id"), nullable=False)
+    student_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("students.id", ondelete="CASCADE"),
+        nullable=False,
+    )
     promotion_id = Column(
-        UUID(as_uuid=True), ForeignKey("promotions.id"), nullable=False
+        UUID(as_uuid=True),
+        ForeignKey("promotions.id", ondelete="CASCADE"),
+        nullable=False,
     )
-    level_id = Column(UUID(as_uuid=True), ForeignKey("levels.id"), nullable=False)
+    level_id = Column(
+        UUID(as_uuid=True), ForeignKey("levels.id", ondelete="CASCADE"), nullable=False
+    )
     time_slot_id = Column(
-        UUID(as_uuid=True), ForeignKey("time_slots.id"), nullable=True
+        UUID(as_uuid=True),
+        ForeignKey("time_slots.id", ondelete="CASCADE"),
+        nullable=True,
     )
-    enrollment_date = Column(DateTime, nullable=False)
-    end_date = Column(DateTime, nullable=True)
-    status = Column(String, nullable=False, default="active")
+
+    enrollment_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=True)
+    status = Column(String(20), nullable=False, default="active")
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(
