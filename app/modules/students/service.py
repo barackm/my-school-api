@@ -48,10 +48,10 @@ def create_student(
                     status_code=404, detail=f"Level with id {level_id} not found"
                 )
 
-            if level.training_type_id != promotion.training_type_id:
+            if level.program_id != promotion.program_id:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Level and promotion do not belong to the same training",
+                    detail=f"Level and promotion do not belong to the same program",
                 )
 
             enrollment = create_student_enrollment(

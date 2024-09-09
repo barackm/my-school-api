@@ -7,15 +7,15 @@ from app.modules.promotions.schema import PromotionResponse
 from app.modules.time_slots.schema import TimeSlotResponse
 
 
-class TrainingTypeBase(BaseModel):
+class ProgramBase(BaseModel):
     name: str
 
 
-class TrainingTypeCreate(TrainingTypeBase):
+class ProgramCreate(ProgramBase):
     pass
 
 
-class TrainingTypeResponse(TrainingTypeBase):
+class ProgramResponse(ProgramBase):
     id: UUID
     created_at: datetime
     updated_at: datetime
@@ -27,9 +27,9 @@ class TrainingTypeResponse(TrainingTypeBase):
         from_attributes = True
 
 
-class TrainingTypesResponse(BaseModel):
+class ProgramsResponse(BaseModel):
     total: int
-    data: List[TrainingTypeResponse]
+    data: List[ProgramResponse]
 
     class Config:
         from_attributes = True

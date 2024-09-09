@@ -4,7 +4,7 @@ from datetime import date, datetime
 
 
 class PromotionBase(BaseModel):
-    training_type_id: UUID
+    program_id: UUID
     price_per_month: float
     promotion_start_date: date
     promotion_end_date: date

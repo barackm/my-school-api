@@ -6,7 +6,7 @@ from datetime import datetime
 class LevelBase(BaseModel):
     name: str
     duration: int
-    training_type_id: UUID
+    program_id: UUID
 
 
 class LevelCreate(LevelBase):

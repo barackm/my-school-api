@@ -8,7 +8,7 @@ from .service import (
     update_time_slot,
     get_time_slot_by_time,
 )
-from ..training_types.service import find_training_type_by_id
+from ..programs.service import find_program_by_id
 
 from app.db.database import get_db
 
@@ -22,12 +22,12 @@ def all(db: Session = Depends(get_db)):
 
 @router.post("/", response_model=TimeSlotResponse)
 def create(time_slot: TimeSlotCreate, db: Session = Depends(get_db)):
-    training_type = find_training_type_by_id(db, time_slot.training_type_id)
+    training_type = find_program_by_id(db, time_slot.program_id)
     if training_type is None:
-        raise HTTPException(status_code=404, detail="Training type not found")
+        raise HTTPException(status_code=404, detail="Program not found")
 
     existing_time_slot = get_time_slot_by_time(
-        db, time_slot.start_time, time_slot.end_time, time_slot.training_type_id
+        db, time_slot.start_time, time_slot.end_time, time_slot.program_id
     )
     if existing_time_slot:
         raise HTTPException(status_code=400, detail="Time slot already exists")

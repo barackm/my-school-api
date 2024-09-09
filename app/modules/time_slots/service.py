@@ -15,7 +15,7 @@ def create_time_slot(db: Session, time_slot: TimeSlotCreate):
     new_time_slot = TimeSlot(
         start_time=time_slot.start_time,
         end_time=time_slot.end_time,
-        training_type_id=time_slot.training_type_id,
+        program_id=time_slot.program_id,
     )
     db.add(new_time_slot)
     db.commit()
@@ -36,15 +36,13 @@ def update_time_slot(db: Session, time_slot_id: str, time_slot: TimeSlotUpdate):
     return existing_time_slot
 
 
-def get_time_slot_by_time(
-    db: Session, start_time: str, end_time: str, training_type_id: str
-):
+def get_time_slot_by_time(db: Session, start_time: str, end_time: str, program_id: str):
     try:
         time_slot = (
             db.query(TimeSlot)
             .filter(TimeSlot.start_time == start_time)
             .filter(TimeSlot.end_time == end_time)
-            .filter(TimeSlot.training_type_id == training_type_id)
+            .filter(TimeSlot.program_id == program_id)
             .first()
         )
         return time_slot

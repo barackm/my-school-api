@@ -5,8 +5,8 @@ from app.db.database import Base
 import uuid
 
 
-class TrainingType(Base):
-    __tablename__ = "training_types"
+class Program(Base):
+    __tablename__ = "programs"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False, unique=True)
@@ -19,11 +19,11 @@ class TrainingType(Base):
     )
 
     levels = relationship(
-        "Level", back_populates="training_type", cascade="all, delete-orphan"
+        "Level", back_populates="program", cascade="all, delete-orphan"
     )
     promotions = relationship(
-        "Promotion", back_populates="training_type", cascade="all, delete-orphan"
+        "Promotion", back_populates="program", cascade="all, delete-orphan"
     )
     time_slots = relationship(
-        "TimeSlot", back_populates="training_type", cascade="all, delete-orphan"
+        "TimeSlot", back_populates="program", cascade="all, delete-orphan"
     )

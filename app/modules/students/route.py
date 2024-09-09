@@ -18,7 +18,7 @@ def all(db: Session = Depends(get_db)):
 def create_new_student(
     student: StudentCreate,
     db: Session = Depends(get_db),
-    training_type_id: str = None,
+    program_id: str = None,
     level_id: str = None,
 ):
-    return create_student(db, student, training_type_id, level_id)
+    return create_student(db, student, program_id, level_id)

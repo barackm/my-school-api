@@ -7,7 +7,7 @@ from .service import (
     get_promotions,
     get_promotion_by_training_type_id,
 )
-from ..training_types.service import find_training_type_by_id
+from ..programs.service import find_program_by_id
 from .schema import PromotionResponse
 
 router = APIRouter()
@@ -26,13 +26,11 @@ def get_promotion(promotion_id: int, db: Session = Depends(get_db)):
     return promotion
 
 
-@router.get("/training/{training_type_id}", response_model=List[PromotionResponse])
-def get_promotion_by_training_type(
-    training_type_id: str, db: Session = Depends(get_db)
-):
-    training_type = find_training_type_by_id(db, training_type_id)
+@router.get("/program/{program_id}", response_model=List[PromotionResponse])
+def get_promotion_by_training_type(program_id: str, db: Session = Depends(get_db)):
+    training_type = find_program_by_id(db, program_id)
     if training_type is None:
-        raise HTTPException(status_code=404, detail="Training type not found")
+        raise HTTPException(status_code=404, detail="Program not found")
 
-    promotions = get_promotion_by_training_type_id(db, training_type_id)
+    promotions = get_promotion_by_training_type_id(db, program_id)
     return promotions

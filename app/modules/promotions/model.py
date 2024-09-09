@@ -9,11 +9,7 @@ class Promotion(Base):
     __tablename__ = "promotions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    training_type_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("training_types.id", ondelete="CASCADE"),
-        nullable=False,
-    )
+    program_id = Column(UUID(as_uuid=True), ForeignKey("programs.id"), nullable=False)
     name = Column(String(255), nullable=False)
     price_per_month = Column(Numeric(10, 2), nullable=False)
     promotion_start_date = Column(Date, nullable=False)
@@ -26,7 +22,7 @@ class Promotion(Base):
         onupdate=text("CURRENT_TIMESTAMP"),
     )
 
-    training_type = relationship("TrainingType", back_populates="promotions")
+    program = relationship("Program", back_populates="promotions")
     enrollments = relationship(
         "StudentEnrollment", back_populates="promotion", overlaps="promotions,students"
     )

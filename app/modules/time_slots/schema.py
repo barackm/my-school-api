@@ -6,7 +6,7 @@ from datetime import time, datetime
 class TimeSlotBase(BaseModel):
     start_time: time
     end_time: time
-    training_type_id: UUID
+    program_id: UUID
 
 
 class TimeSlotCreate(TimeSlotBase):
