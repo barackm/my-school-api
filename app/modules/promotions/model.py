@@ -15,12 +15,11 @@ class Promotion(Base):
         nullable=False,
     )
     name = Column(String(255), nullable=False)
-    price_per_month = Column(Numeric(10, 2), nullable=False)
     promotion_start_date = Column(Date, nullable=False)
     promotion_end_date = Column(Date, nullable=False)
     general_fee = Column(Numeric(10, 2), nullable=False)
-    installments = Column(Numeric(10, 2), nullable=False)
-
+    installments = Column(Numeric(10, 2), nullable=True, default=1)
+    discount = Column(Numeric(10, 2), nullable=True, default=0)
     created_at = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
     updated_at = Column(
         DateTime,

@@ -9,6 +9,7 @@ class PromotionBase(BaseModel):
     promotion_end_date: date
     general_fee: float
     installments: float
+    discount: float = 0
     name: str
 
 
