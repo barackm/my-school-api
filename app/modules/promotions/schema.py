@@ -5,9 +5,10 @@ from datetime import date, datetime
 
 class PromotionBase(BaseModel):
     program_id: UUID
-    price_per_month: float
     promotion_start_date: date
     promotion_end_date: date
+    general_fee: float
+    installments: float
     name: str
 
 

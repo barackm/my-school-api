@@ -9,11 +9,17 @@ class Promotion(Base):
     __tablename__ = "promotions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    program_id = Column(UUID(as_uuid=True), ForeignKey("programs.id"), nullable=False)
+    program_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("programs.id", ondelete="CASCADE"),
+        nullable=False,
+    )
     name = Column(String(255), nullable=False)
     price_per_month = Column(Numeric(10, 2), nullable=False)
     promotion_start_date = Column(Date, nullable=False)
     promotion_end_date = Column(Date, nullable=False)
+    general_fee = Column(Numeric(10, 2), nullable=False)
+    installments = Column(Numeric(10, 2), nullable=False)
 
     created_at = Column(DateTime, server_default=text("CURRENT_TIMESTAMP"))
     updated_at = Column(

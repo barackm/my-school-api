@@ -12,7 +12,7 @@ class StudentEnrollment(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     student_id = Column(
         UUID(as_uuid=True),
-        ForeignKey("students.id", ondelete="CASCADE"),
+        ForeignKey("students.id"),
         nullable=False,
     )
     promotion_id = Column(
