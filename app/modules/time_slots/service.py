@@ -48,3 +48,8 @@ def get_time_slot_by_time(db: Session, start_time: str, end_time: str, program_i
         return time_slot
     except DataError:
         return None
+
+
+def get_time_slot_by_id(db: Session, time_slot_id: str):
+    time_slot = db.query(TimeSlot).filter(TimeSlot.id == time_slot_id).first()
+    return time_slot

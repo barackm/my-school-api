@@ -25,4 +25,4 @@ class TimeSlot(Base):
     )
 
     program = relationship("Program", back_populates="time_slots")
-    enrollments = relationship("StudentEnrollment", back_populates="time_slot")
+    enrollments = relationship("UserEnrollment", back_populates="time_slot")

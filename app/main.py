@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.modules.students.route import router as student_router
+from app.modules.users.route import router as user_router
 from sqlalchemy.orm import registry
 from app.modules.levels.route import router as level_router
 from app.modules.promotions.route import router as promotion_router
@@ -19,11 +19,11 @@ app.add_middleware(
 mapper_registry = registry()
 mapper_registry.configure()
 
-app.include_router(student_router, prefix="/students", tags=["students"])
+app.include_router(user_router, prefix="/users", tags=["users"])
 app.include_router(level_router, prefix="/levels", tags=["levels"])
 app.include_router(promotion_router, prefix="/promotions", tags=["promotions"])
 app.include_router(program_router, prefix="/programs", tags=["programs"])
-app.include_router(time_slot_router, prefix="/time_slots", tags=["time_slots"])
+app.include_router(time_slot_router, prefix="/time-slots", tags=["time-slots"])
 
 
 @app.get("/")

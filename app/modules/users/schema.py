@@ -4,7 +4,7 @@ from uuid import UUID
 from app.modules.enrollments.schema import EnrollmentResponse
 
 
-class StudentCreate(BaseModel):
+class UserCreate(BaseModel):
     first_name: str
     last_name: str
     surname: Optional[str] = None
@@ -15,16 +15,16 @@ class StudentCreate(BaseModel):
     enrollments: Optional[List[EnrollmentResponse]] = []
 
 
-class StudentResponse(StudentCreate):
+class UserResponse(UserCreate):
     id: UUID
 
     class Config:
         from_attributes = True
 
 
-class StudentsResponse(BaseModel):
+class UsersResponse(BaseModel):
     total: int
-    data: List[StudentCreate]
+    data: List[UserCreate]
 
     class Config:
         from_attributes = True

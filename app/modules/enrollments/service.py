@@ -1,21 +1,23 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
-from .model import StudentEnrollment
+from .model import UserEnrollment
 
 
-def create_student_enrollment(
+def create_user_enrollment(
     db: Session,
-    student_id: int,
+    user_id: int,
     promotion_id: int,
     level_id: str,
-) -> StudentEnrollment:
-    student_enrollment = StudentEnrollment(
-        student_id=student_id,
+    time_slot_id: str,
+) -> UserEnrollment:
+    user_enrollment = UserEnrollment(
+        user_id=user_id,
         promotion_id=promotion_id,
         level_id=level_id,
         enrollment_date=datetime.now(),
         end_date=None,
+        time_slot_id=time_slot_id,
     )
-    db.add(student_enrollment)
+    db.add(user_enrollment)
 
-    return student_enrollment
+    return user_enrollment

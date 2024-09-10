@@ -6,7 +6,7 @@ from app.modules.promotions.schema import PromotionResponse
 
 
 class EnrollmentBase(BaseModel):
-    student_id: UUID
+    user_id: UUID
     promotion_id: UUID
     level_id: UUID
     enrollment_date: datetime

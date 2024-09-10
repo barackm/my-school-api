@@ -6,13 +6,13 @@ import uuid
 from datetime import datetime, timezone
 
 
-class StudentEnrollment(Base):
-    __tablename__ = "student_enrollments"
+class UserEnrollment(Base):
+    __tablename__ = "user_enrollments"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    student_id = Column(
+    user_id = Column(
         UUID(as_uuid=True),
-        ForeignKey("students.id"),
+        ForeignKey("users.id"),
         nullable=False,
     )
     promotion_id = Column(
@@ -40,11 +40,11 @@ class StudentEnrollment(Base):
         onupdate=lambda: datetime.now(timezone.utc),
     )
 
-    student = relationship(
-        "Student", back_populates="enrollments", overlaps="students,promotions"
+    user = relationship(
+        "User", back_populates="enrollments", overlaps="users,promotions"
     )
     promotion = relationship(
-        "Promotion", back_populates="enrollments", overlaps="students,promotions"
+        "Promotion", back_populates="enrollments", overlaps="users,promotions"
     )
     time_slot = relationship(
         "TimeSlot", back_populates="enrollments", overlaps="time_slots"
