@@ -93,10 +93,20 @@ view it:
 
 ## Directory Structure
 
-\`\`\` . ├── Dockerfile ├── README.md ├── alembic/ # Alembic migrations folder ├── app/ │ ├── core/ # Configurations │
-├── db/ # Database connection │ ├── models/ # Database models │ ├── modules/ # Features (users, programs, enrollments) │
-└── main.py # FastAPI application entry point ├── requirements.txt # Python dependencies └── run.py # Main script to run
-the application \`\`\`
+\`\`\`
+.
+├── Dockerfile
+├── README.md
+├── alembic/               # Alembic migrations folder
+├── app/
+│   ├── core/              # Configurations
+│   ├── db/                # Database connection
+│   ├── models/            # Database models
+│   ├── modules/           # Features (users, programs, enrollments)
+│   └── main.py            # FastAPI application entry point
+├── requirements.txt       # Python dependencies
+└── run.py                 # Main script to run the application
+\`\`\`
 
 ## License
 
