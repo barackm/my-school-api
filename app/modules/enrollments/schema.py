@@ -2,14 +2,14 @@ from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
 from typing import Optional
-from app.modules.promotions.schema import PromotionResponse
+from ..time_slots.schema import TimeSlotResponse
 
 
 class EnrollmentBase(BaseModel):
     user_id: UUID
     promotion_id: UUID
     level_id: UUID
-    enrollment_date: datetime
+    time_slot_id: Optional[UUID] = None
     end_date: Optional[datetime] = None
     status: str = "active"
 
@@ -22,7 +22,15 @@ class EnrollmentResponse(EnrollmentBase):
     id: UUID
     created_at: datetime
     updated_at: datetime
-    promotion: PromotionResponse
+    promotion: Optional["PromotionResponse"]
+    time_slot: Optional[TimeSlotResponse] = None
 
     class Config:
         from_attributes = True
+
+
+class EnrollmentUpdate(BaseModel):
+    end_date: Optional[datetime] = None
+    status: Optional[str] = None
+
+from ..promotions.schema import PromotionResponse

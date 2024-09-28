@@ -17,11 +17,11 @@ def all(db: Session = Depends(get_db)):
 def create_new_user(
     user: UserCreate,
     db: Session = Depends(get_db),
-    program_id: str = Query(None),
     level_id: str = Query(None),
+    promotion_id: str = Query(None),
     time_slot_id: str = Query(None),
 ):
-    print("program_id", program_id)
     print("level_id", level_id)
     print("time_slot_id", time_slot_id)
-    return create_user(db, user, program_id, level_id, time_slot_id)
+    print("promotion_id", promotion_id)
+    return create_user(db, user, promotion_id, level_id, time_slot_id)

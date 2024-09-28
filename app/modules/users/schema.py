@@ -17,6 +17,7 @@ class UserCreate(BaseModel):
 
 class UserResponse(UserCreate):
     id: UUID
+    status: Optional[str] = "active"
 
     class Config:
         from_attributes = True
@@ -24,7 +25,7 @@ class UserResponse(UserCreate):
 
 class UsersResponse(BaseModel):
     total: int
-    data: List[UserCreate]
+    data: List[UserResponse]
 
     class Config:
         from_attributes = True

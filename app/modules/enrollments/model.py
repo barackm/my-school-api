@@ -29,7 +29,6 @@ class UserEnrollment(Base):
         nullable=True,
     )
 
-    enrollment_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=True)
     status = Column(String(20), nullable=False, default="active")
 
