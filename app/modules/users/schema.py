@@ -13,6 +13,12 @@ class UserCreate(BaseModel):
     photo: Optional[str] = None
     address: Optional[str] = None
     enrollments: Optional[List[EnrollmentResponse]] = []
+    otp: Optional[str] = (None,)
+    otp_expiration: Optional[str] = (None,)
+
+    promotion_id: Optional[str] = None
+    level_id: Optional[str] = None
+    time_slot_id: Optional[str] = None
 
 
 class UserResponse(UserCreate):

@@ -1,11 +1,9 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from .model import User
 from .schema import UserCreate
-from ..levels.service import get_level_by_id
-from ..promotions.service import get_promotion_by_id
-from ..enrollments.service import create_user_enrollment
-from ..time_slots.service import get_time_slot_by_id
+from ..enrollments.service import create_user_enrollment, validate_enrollment_details
 
 
 def get_users(db: Session):
@@ -16,86 +14,92 @@ def get_users(db: Session):
 
 def create_user(
     db: Session,
-    user: UserCreate,
-    promotion_id: str = None,
-    level_id: str = None,
-    time_slot_id: str = None,
-):
+    user_data: UserCreate,
+) -> User:
+    promotion_id = user_data["promotion_id"]
+    level_id = user_data["level_id"]
+    time_slot_id = user_data["time_slot_id"]
+
+    validate_user_does_not_exist(
+        db, identifier=user_data["email"] if user_data["email"] else user_data["phone"]
+    )
+
+    if promotion_id and level_id:
+        promotion, level, time_slot = validate_enrollment_details(
+            db, promotion_id, level_id, time_slot_id
+        )
+    else:
+        promotion = level = time_slot = None
 
     try:
-        user_exists = get_user_by_email(db, user.email)
-        if user_exists:
-            raise HTTPException(
-                status_code=400, detail="User with this email already exists"
-            )
+        new_user = create_new_user(db, user_data)
+        print(f"new_user {new_user}")
+        if promotion and level:
+            enrollment_data = {
+                "user_id": new_user.id,
+                "promotion_id": promotion.id,
+                "level_id": level.id,
+                "time_slot_id": time_slot.id if time_slot else None,
+            }
+            enrollment = create_user_enrollment(db=db, enrollment=enrollment_data)
 
-        new_user = User(
-            first_name=user.first_name,
-            last_name=user.last_name,
-            surname=user.surname,
-            email=user.email,
-            phone=user.phone,
-            address=user.address,
-            photo=user.photo,
-        )
-        db.add(new_user)
         db.commit()
         db.refresh(new_user)
-
-        if promotion_id and level_id:
-            promotion = get_promotion_by_id(db, promotion_id)
-            if not promotion:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Promotion with id {promotion_id} not found",
-                )
-
-            level = get_level_by_id(db, level_id)
-            if not level:
-                raise HTTPException(
-                    status_code=404, detail=f"Level with id {level_id} not found"
-                )
-
-            if level.program_id != promotion.program_id:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Level and promotion do not belong to the same program",
-                )
-
-            time_slot = None
-            if time_slot_id:
-                time_slot = get_time_slot_by_id(db, time_slot_id)
-                if not time_slot:
-                    raise HTTPException(
-                        status_code=404,
-                        detail=f"Time slot with id {time_slot_id} not found",
-                    )
-                if time_slot.program_id != promotion.program_id:
-                    raise HTTPException(
-                        status_code=400,
-                        detail="Time slot does not belong to the same program as the promotion",
-                    )
-
-            enrollment = create_user_enrollment(
-                db=db,
-                user_id=new_user.id,
-                promotion_id=promotion_id,
-                level_id=level_id,
-                time_slot_id=(time_slot_id if time_slot else None),
-            )
-            db.add(enrollment)
-            db.commit()
+        if promotion and level:
+            db.refresh(enrollment)
 
         return new_user
 
+    except HTTPException:
+        raise
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        print(e)
+        raise HTTPException(
+            status_code=500, detail=f"An unexpected error occurred. {e}"
+        )
+
+
+def validate_user_does_not_exist(db: Session, identifier: str):
+    if get_user_by_email(db, identifier):
+        raise HTTPException(
+            status_code=400, detail="User with this email already exists."
+        )
+
+
+def create_new_user(db: Session, user_data: UserCreate) -> User:
+    new_user = User(
+        first_name=user_data["first_name"],
+        last_name=user_data["last_name"],
+        surname=user_data["surname"],
+        email=user_data["email"],
+        phone=user_data["phone"],
+        address=user_data["address"],
+        photo=user_data["photo"],
+    )
+    db.add(new_user)
+    db.flush()
+    return new_user
 
 
 def get_user_by_id(db: Session, user_id: int):
     return db.query(User).filter(User.id == user_id).first()
 
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(User).filter(User.email == email).first()
+def get_user_by_email(db: Session, identifier: str):
+
+    return (
+        db.query(User)
+        .filter(
+            or_(User.email == identifier, User.phone == identifier)
+        )  # Use or_ to combine conditions
+        .first()
+    )
+
+
+def get_user_by_email_or_phone_number(db: Session, identifier: str):
+    return (
+        db.query(User)
+        .filter(User.phone == identifier | User.email == identifier)
+        .first()
+    )
