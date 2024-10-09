@@ -90,16 +90,19 @@ def get_user_by_email(db: Session, identifier: str):
 
     return (
         db.query(User)
-        .filter(
-            or_(User.email == identifier, User.phone == identifier)
-        )  # Use or_ to combine conditions
+        .filter(or_(User.email == identifier, User.phone == identifier))
         .first()
     )
 
 
 def get_user_by_email_or_phone_number(db: Session, identifier: str):
-    return (
+    user = (
         db.query(User)
-        .filter(User.phone == identifier | User.email == identifier)
+        .filter(or_(User.phone == identifier, User.email == identifier))
         .first()
     )
+
+    if not user:
+        raise HTTPException(status_code=400, detail="User not found")
+
+    return user
